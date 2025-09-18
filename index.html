@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>WASM Video Filter</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        /* --- Reset & basics --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: #111;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 1rem;
+        }
+
+        h1 {
+            font-weight: 400;
+            margin-bottom: 1rem;
+        }
+
+        /* --- Video container --- */
+        #video-container {
+            position: relative;
+            width: 480px;
+            max-width: 100%;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #000;
+        }
+
+        video {
+            display: block;
+            width: 100%;
+            height: auto;
+            opacity: 0;
+        }
+
+        canvas {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            mix-blend-mode: normal;
+        }
+
+        /* --- Controls --- */
+        #controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 0.5rem;
+            width: 480px;
+            max-width: 100%;
+        }
+
+        button,
+        input[type="range"] {
+            background: #222;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 0.4rem 0.6rem;
+            margin: 0 0.2rem;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+
+        #controls,
+        #filter-controls {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 0.5rem;
+            width: 480px;
+            max-width: 100%;
+        }
+
+        input[type="range"] {
+            flex: 1;
+            margin: 0 0.4rem;
+        }
+
+        button:hover,
+        input[type="range"]:hover {
+            background: #333;
+        }
+
+        /* --- File input --- */
+        #video-upload {
+            margin-bottom: 1rem;
+        }
+
+        /* --- Info / credits --- */
+        #info,
+        #credits {
+            width: 480px;
+            max-width: 100%;
+            margin-top: 1rem;
+            font-size: 0.85rem;
+            line-height: 1.4;
+            color: #aaa;
+        }
+
+        a {
+            color: #6cf;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Retro CRT NTSC Player</h1>
+
+    <input type="file" id="video-upload" accept="video/*" />
+
+    <div id="video-container">
+        <video id="video">
+            <source src="bbb.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <canvas id="canvas"></canvas>
+    </div>
+
+    <div id="controls">
+        <button id="play-pause">Play</button>
+        <input type="range" id="seek" min="0" max="100" value="0">
+        <input type="range" id="volume" min="0" max="1" step="0.01" value="1">
+        <button id="fullscreen">Fullscreen</button>
+    </div>
+
+    <div id="filter-controls">
+        <label>Color<input type="checkbox" id="color" checked></label>
+        <label>Scanlines<input type="checkbox" id="scanlines" checked></label>
+        <label>Noise<input type="range" id="noise" min="0" max="100" value="12"></label>
+    </div>
+
+    <div id="info">
+        ⚠️ Note: This feature may not work on iPhone/iOS because the native video player takes control of the playback.
+    </div>
+
+    <div id="credits">
+        💡 Filter implementation inspired by <a href="https://github.com/LMP88959/NTSC-CRT"
+            target="_blank">https://github.com/LMP88959/NTSC-CRT</a>.
+    </div>
+
+    <script type="module" src="main.js"></script>
+</body>
+
+</html>
